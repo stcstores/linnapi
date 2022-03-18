@@ -30,7 +30,7 @@ changelog-cli = ">=0.7.1"
 bump2version = ">=1.0.1"
 flake8-pyi = ">=20.10.0"
 types-toml = "^0.10.4"
-types-requests = "^2.27.12"
+types-requests = "^2.27.13"
 requests-mock = "^1.9.3"
 
 [build-system]
