@@ -60,7 +60,6 @@ class SetStockLevelBySKU(LinnworksAPIRequest):
         """Return request JSON post data."""
         location_id: str = kwargs["location_id"]
         changes: tuple[tuple[str, int]] = kwargs["changes"]
-        print(changes)
         stock_levels = [
             {"SKU": str(sku), "LocationID": location_id, "Level": int(level)}
             for sku, level in changes

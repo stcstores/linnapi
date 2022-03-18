@@ -2,6 +2,8 @@
 
 from typing import Any, MutableMapping, Type
 
+import requests
+
 from .session import LinnworksAPISession
 
 
@@ -35,6 +37,14 @@ class LinnworksAPIRequest:
         """Return request JSON post data."""
         return None
 
+    @classmethod
+    def parse_response(
+        cls, response: requests.models.Response, *args: Any, **kwargs: Any
+    ) -> Any:
+        """Parse the request response."""
+        print(response.json())
+        return response.json()
+
 
 def make_request(
     request_method: Type[LinnworksAPIRequest], *args: Any, **kwargs: Any
@@ -53,4 +63,4 @@ def make_request(
         data=data,
         json=json,
     )
-    return response.json()
+    return request_method.parse_response(response, *args, **kwargs)

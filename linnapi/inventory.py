@@ -32,9 +32,9 @@ def get_stock_level_by_stock_id(stock_item_id: str) -> models.StockLevelInfo:
     return models.StockLevelInfo(stock_level_data[0])
 
 
-def get_stock_level_by_stock_sku(sku: str) -> models.StockLevelInfo:
+def get_stock_level_by_sku(sku: str) -> models.StockLevelInfo:
     """Return stock level information for a product by stock item ID."""
-    stock_item_id = get_stock_item_id_by_sku(sku)
+    stock_item_id = get_stock_item_id_by_sku(sku=sku)
     stock_level_data = make_request(GetStockLevel, stock_item_id=stock_item_id)
     return models.StockLevelInfo(stock_level_data[0])
 

@@ -30,8 +30,8 @@ class LinnworksAPISession:
                 self.__class__.load_from_config_file(config_file_path=config_path)
         if not self.__class__.credentials_are_set():
             raise exceptions.LoginCredentialsNotSetError()
-        session = self.__class__._create_session()
-        return session
+        self.__class__._authorise_session()
+        return self.__class__.session
 
     def __exit__(self, exc_type: None, exc_value: None, exc_tb: None) -> None:
         self.__class__.session
@@ -59,7 +59,7 @@ class LinnworksAPISession:
     @classmethod
     def request_headers(cls) -> MutableMapping[str, str]:
         """Return request auth headers."""
-        if cls.session is None:
+        if cls.session_token is None:
             raise exceptions.SessionNotAuthorizedError()
         return {"Authorization": str(cls.session_token)}
 
@@ -92,18 +92,16 @@ class LinnworksAPISession:
         )
 
     @classmethod
-    def _create_session(cls) -> requests.Session:
-        session = requests.Session()
+    def _authorise_session(cls) -> str:
         auth_request_data = {
             "ApplicationID": cls.application_id,
             "ApplicationSecret": cls.application_secret,
             "Token": cls.application_token,
         }
-        auth_request_response = session.post(cls.AUTH_URL, data=auth_request_data)
+        auth_request_response = cls.session.post(cls.AUTH_URL, data=auth_request_data)
         auth_request_response.raise_for_status()
-        cls.session_token = auth_request_response.json()["Token"]
-        cls.session = session
-        return session
+        cls.session_token = str(auth_request_response.json()["Token"])
+        return cls.session_token
 
 
 def linnworks_api_session(func: Callable) -> Callable:

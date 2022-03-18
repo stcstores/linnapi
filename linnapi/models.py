@@ -4,14 +4,6 @@ import datetime as dt
 from typing import Any
 
 
-class StockLocation:
-    """Model for stock location information."""
-
-    def __init__(self, location_data: dict[str, Any]):
-        """Model for stock location information."""
-        self.raw = location_data
-
-
 class StockLevelInfo:
     """Model for product stock level information."""
 
@@ -48,6 +40,7 @@ class StockLevelInfo:
         self.unit_cost = stock_level_data["UnitCost"]
         self.row_id = stock_level_data["rowid"]
 
-    def parse_date_time(self, date_time_string: str) -> dt.datetime:
+    @staticmethod
+    def parse_date_time(date_time_string: str) -> dt.datetime:
         """Return a date time string as datetime.datetime."""
         return dt.datetime.fromisoformat(date_time_string.replace("Z", ""))
