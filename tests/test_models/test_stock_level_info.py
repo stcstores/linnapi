@@ -81,7 +81,7 @@ def test_stock_level_info_with_get_stock_level_response_parse_date_time_method(
 ):
     date_string = get_stock_level_response["LastUpdateDate"]
     date = dt.datetime(
-        year=2022, month=3, day=15, hour=14, minute=31, second=9, microsecond=103000
+        year=2022, month=3, day=15, hour=14, minute=31, second=9, microsecond=103
     )
     assert models.StockLevelInfo.parse_date_time(date_string) == date
 
@@ -208,7 +208,7 @@ def test_stock_level_info_with_set_stock_level_response_parse_date_time_method(
     set_stock_level_response,
 ):
     date_string = set_stock_level_response["LastUpdateDate"]
-    date = dt.datetime(2022, 3, 18, 15, 22, 6, 273000)
+    date = dt.datetime(2022, 3, 18, 15, 22, 6, 273)
     assert models.StockLevelInfo.parse_date_time(date_string) == date
 
 

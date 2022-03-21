@@ -3,6 +3,8 @@
 import datetime as dt
 from typing import Any
 
+import pytz
+
 
 class StockLevelInfo:
     """Model for product stock level information."""
@@ -43,4 +45,19 @@ class StockLevelInfo:
     @staticmethod
     def parse_date_time(date_time_string: str) -> dt.datetime:
         """Return a date time string as datetime.datetime."""
-        return dt.datetime.fromisoformat(date_time_string.replace("Z", ""))
+        date_time_string = date_time_string.replace("Z", "")
+        date, time = date_time_string.split("T")
+        year, month, day = date.split("-")
+        time, microsecond = time.split(".")
+        hour, minute, second = time.split(":")
+        date_time = dt.datetime(
+            year=int(year),
+            month=int(month),
+            day=int(day),
+            hour=int(hour),
+            minute=int(minute),
+            second=int(second),
+            microsecond=int(microsecond),
+        )
+        date_time.replace(tzinfo=pytz.utc)
+        return date_time
