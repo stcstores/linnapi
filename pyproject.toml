@@ -34,5 +34,5 @@ types-requests = "^2.27.13"
 requests-mock = "^1.9.3"
 
 [build-system]
-requires = ["poetry-core>=1.1.6"]
+requires = ["poetry>=1.1.6"]
 build-backend = "poetry.masonry.api"
