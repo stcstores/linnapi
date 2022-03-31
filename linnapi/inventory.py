@@ -5,6 +5,7 @@ from typing import MutableMapping
 from linnapi import exceptions, models
 from linnapi.request import make_request
 from linnapi.requests.inventory import (
+    AddImageToInventoryItem,
     GetStockItemIDsBySKU,
     GetStockLevel,
     SetStockLevelBySKU,
@@ -55,3 +56,20 @@ def set_stock_level(
         change_source=change_source,
     )
     return [models.StockLevelInfo(_) for _ in updated_stock_data]
+
+
+def add_image_to_inventory_item(
+    image_url: str,
+    sku: str | None = None,
+    stock_item_id: str | None = None,
+    is_main: bool = False,
+) -> models.InventoryItemImage:
+    """Add an image to a product."""
+    inventory_image = make_request(
+        AddImageToInventoryItem,
+        item_number=sku,
+        is_main=is_main,
+        image_url=image_url,
+        stock_item_id=stock_item_id,
+    )
+    return models.InventoryItemImage(inventory_image)

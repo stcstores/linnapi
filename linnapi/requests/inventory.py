@@ -65,3 +65,29 @@ class SetStockLevelBySKU(LinnworksAPIRequest):
             for sku, level in changes
         ]
         return {"stockLevels": stock_levels}
+
+
+class AddImageToInventoryItem(LinnworksAPIRequest):
+    """Adds and image to the stock item."""
+
+    URL = "https://eu-ext.linnworks.net/api/Inventory/AddImageToInventoryItem"
+    METHOD = LinnworksAPIRequest.POST
+
+    @classmethod
+    def json(cls, *args: Any, **kwargs: Any) -> dict[str, Any] | list[Any]:
+        """Return request JSON post data."""
+        item_number: str = kwargs.get("item_number", "")
+        stock_item_id: str = kwargs.get("stock_item_id", "")
+        is_main: bool = kwargs["is_main"]
+        image_url: str = kwargs["image_url"]
+        request_data = {
+            "IsMain": is_main,
+            "ImageUrl": image_url,
+        }
+        if not item_number and not stock_item_id:
+            raise ValueError("Either `stock_item_id` or `sku` must be passed.")
+        if item_number:
+            request_data["ItemNumber"] = item_number
+        if stock_item_id:
+            request_data["StockItemId"] = stock_item_id
+        return {"request": request_data}

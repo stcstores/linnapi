@@ -61,3 +61,15 @@ class StockLevelInfo:
         )
         date_time.replace(tzinfo=pytz.utc)
         return date_time
+
+
+class InventoryItemImage:
+    """Model for inventory image information."""
+
+    def __init__(self, inventory_image: dict[str, Any]):
+        """Model for inventory image information."""
+        self.raw = inventory_image
+        self.stock_item_id = inventory_image["StockItemId"]
+        self.image_id = inventory_image["ImageId"]
+        self.image_url = inventory_image["ImageUrl"]
+        self.image_thumbnail_url = inventory_image["ImageThumbnailUrl"]
