@@ -3,12 +3,15 @@
 from typing import MutableMapping
 
 from linnapi import exceptions, models
-from linnapi.request import make_request
+from linnapi.request import MultiItemRequest, make_request
 from linnapi.requests.inventory import (
     AddImageToInventoryItem,
+    DeleteImagesFromInventoryItem,
+    GetInventoryItemImages,
     GetStockItemIDsBySKU,
     GetStockLevel,
     SetStockLevelBySKU,
+    UpdateImages,
 )
 
 
@@ -73,3 +76,53 @@ def add_image_to_inventory_item(
         stock_item_id=stock_item_id,
     )
     return models.InventoryItemImage(inventory_image)
+
+
+def get_inventory_item_images(inventory_item_id: str) -> list[models.StockItemImage]:
+    """Get image information for a product."""
+    response = make_request(GetInventoryItemImages, inventory_item_id=inventory_item_id)
+    return [models.StockItemImage(stock_item_image) for stock_item_image in response]
+
+
+class UpdateImageRequster(MultiItemRequest):
+    """Requester for requesting multiple image updates."""
+
+    request_method = UpdateImages
+
+    def add_request(  # type: ignore[override]
+        self, image_id: str, stock_item_id: str, sort_order: int, is_main: bool = False
+    ) -> None:
+        """
+        Add an image update request.
+
+        Kwargs:
+            image_id (str): The ID (GUID) of the image to update.
+            stock_item_id (str): The ID (GUID) of the product the image belongs to.
+            sort_order (int): The position of the image.
+            is_main (bool): Is the image the main image for the product.
+        """
+        kwargs = {
+            "row_id": image_id,
+            "stock_item_id": stock_item_id,
+            "sort_order": sort_order,
+            "is_main": is_main,
+        }
+        self._add_request(kwargs)
+
+
+class DeleteImagesRequester(MultiItemRequest):
+    """Requester for deleting images from inventory items."""
+
+    request_method = DeleteImagesFromInventoryItem
+
+    def add_request(self, stock_item_id: str, image_url: str) -> None:  # type: ignore[override]
+        """
+        Add a delete image request.
+
+        Kwargs:
+        image_id (str): ID (GUID) of image, passed as "pkRowId". Required.
+        stock_item_id (str): The ID (GUID) of the stock item to which the image
+            belongs. Requred.
+        """
+        kwargs = {"stock_item_id": stock_item_id, "image_url": image_url}
+        self._add_request(kwargs)

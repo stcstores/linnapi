@@ -69,7 +69,23 @@ class InventoryItemImage:
     def __init__(self, inventory_image: dict[str, Any]):
         """Model for inventory image information."""
         self.raw = inventory_image
-        self.stock_item_id = inventory_image["StockItemId"]
-        self.image_id = inventory_image["ImageId"]
-        self.image_url = inventory_image["ImageUrl"]
-        self.image_thumbnail_url = inventory_image["ImageThumbnailUrl"]
+        self.stock_item_id: str = inventory_image["StockItemId"]
+        self.image_id: str = inventory_image["ImageId"]
+        self.image_url: str = inventory_image["ImageUrl"]
+        self.image_thumbnail_url: str = inventory_image["ImageThumbnailUrl"]
+
+
+class StockItemImage:
+    """Model for stock item image information."""
+
+    def __init__(self, stock_item_image: dict[str, Any]):
+        """Model for stock item image information."""
+        self.raw = stock_item_image
+        self.source: str = stock_item_image["Source"]
+        self.full_source: str = stock_item_image["FullSource"]
+        self.checksum_value: str = stock_item_image["CheckSumValue"]
+        self.image_id: str = stock_item_image["pkRowId"]
+        self.is_main: bool = stock_item_image["IsMain"]
+        self.sort_order: int = stock_item_image["SortOrder"]
+        self.stock_item_id: str = stock_item_image["StockItemId"]
+        self.stock_item_int_id: int = stock_item_image["StockItemIntId"]

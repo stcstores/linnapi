@@ -42,8 +42,78 @@ class LinnworksAPIRequest:
         cls, response: requests.models.Response, *args: Any, **kwargs: Any
     ) -> Any:
         """Parse the request response."""
-        print(response.json())
         return response.json()
+
+    @classmethod
+    def multi_headers(
+        cls, requests: list[MutableMapping[str, Any]]
+    ) -> MutableMapping[str, str]:
+        """Return request headers."""
+        return cls.headers(requests[0])
+
+    @classmethod
+    def multi_params(
+        cls, requests: list[MutableMapping[str, Any]]
+    ) -> None | dict[str, Any]:
+        """Return request URL parameters."""
+        return cls.params(requests[0])
+
+    @classmethod
+    def multi_data(
+        cls, requests: list[MutableMapping[str, Any]]
+    ) -> None | dict[str, Any]:
+        """Return request POST data."""
+        return cls.data(requests[0])
+
+    @classmethod
+    def multi_json(
+        cls, requests: list[MutableMapping[str, Any]]
+    ) -> None | dict[str, Any] | list[Any]:
+        """Return request JSON post data."""
+        return cls.json(requests[0])
+
+    @classmethod
+    def multi_parse_response(
+        cls,
+        response: requests.models.Response,
+        requests: list[MutableMapping[str, Any]],
+    ) -> Any:
+        """Parse the request response."""
+        return cls.parse_response(response, requests[0])
+
+
+class MultiItemRequest:
+    """Base class for multi-item requesters."""
+
+    request_method = LinnworksAPIRequest
+
+    def __init__(self) -> None:
+        """Create a request with multiple repeated parameters."""
+        self.requests: list[MutableMapping[str, Any]] = []
+
+    def _add_request(self, request: MutableMapping[str, Any]) -> None:
+        self.requests.append(request)
+
+    def add_request(self, *args: Any, **kwargs: Any) -> None:
+        """Add a request to the request list."""
+        raise NotImplementedError
+
+    def request(self) -> Any:
+        """Make request with added parameters."""
+        headers = LinnworksAPISession.request_headers()
+        headers.update(self.request_method.multi_headers(self.requests))
+        params = self.request_method.multi_params(self.requests)
+        data = self.request_method.multi_data(self.requests)
+        json = self.request_method.multi_json(self.requests)
+        response = LinnworksAPISession.session.request(
+            url=self.request_method.URL,
+            method=self.request_method.METHOD,
+            headers=headers,
+            params=params,
+            data=data,
+            json=json,
+        )
+        return self.request_method.multi_parse_response(response, self.requests)
 
 
 def make_request(
