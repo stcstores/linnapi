@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from linnapi import inventory
+from linnapi import exceptions, inventory
 from linnapi.requests.inventory import GetStockItemIDsBySKU
 
 
@@ -69,6 +69,13 @@ def mock_multiple_response(multiple_response_data):
         yield mock_make_request
 
 
+@pytest.fixture
+def mock_invalid_response():
+    with patch("linnapi.inventory.make_request") as mock_make_request:
+        mock_make_request.return_value = {"invalid_key": "invalid_value"}
+        yield mock_make_request
+
+
 def test_get_stock_item_ids_by_sku_return_value(
     mock_single_response, sku, stock_item_id
 ):
@@ -95,3 +102,8 @@ def test_get_stock_item_ids_by_sku_return_value_multiple_skus(
     assert returned_value == {
         sku: stock_item_id for sku, stock_item_id in zip(skus, stock_item_ids)
     }
+
+
+def test_get_stock_item_ids_by_sku_invalid_response(mock_invalid_response, sku):
+    with pytest.raises(exceptions.InvalidResponseError):
+        inventory.get_stock_item_ids_by_sku(sku)

@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from linnapi import inventory
+from linnapi import exceptions, inventory
 from linnapi.models import StockLevelInfo
 from linnapi.requests.inventory import GetStockLevel
 
@@ -50,6 +50,13 @@ def mock_make_request(get_stock_level_response):
         yield mock_request
 
 
+@pytest.fixture
+def mock_make_request_with_invalid_response(get_stock_level_response):
+    with patch("linnapi.inventory.make_request") as mock_request:
+        mock_request.return_value = [{"invalid_key": "invalid_value"}]
+        yield mock_request
+
+
 def test_get_stock_level_by_stock_id_return_value(
     mock_make_request, stock_item_id, get_stock_level_response
 ):
@@ -63,3 +70,8 @@ def test_get_stock_level_by_stock_id_makes_request(mock_make_request, stock_item
     mock_make_request.assert_called_once_with(
         GetStockLevel, stock_item_id=stock_item_id
     )
+
+
+def test_invaild_response(mock_make_request_with_invalid_response, stock_item_id):
+    with pytest.raises(exceptions.InvalidResponseError):
+        inventory.get_stock_level_by_stock_id(stock_item_id=stock_item_id)

@@ -17,8 +17,12 @@ from linnapi.requests.inventory import (
 
 def get_stock_item_ids_by_sku(skus: list[str]) -> MutableMapping[str, str]:
     """Return the stock item ID for a product SKU."""
-    response_data = make_request(GetStockItemIDsBySKU, skus=skus)
-    return {item["SKU"]: item["StockItemId"] for item in response_data["Items"]}
+    response = make_request(GetStockItemIDsBySKU, skus=skus)
+    print(response)
+    try:
+        return {item["SKU"]: item["StockItemId"] for item in response["Items"]}
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
 
 
 def get_stock_item_id_by_sku(sku: str) -> str:
@@ -32,15 +36,23 @@ def get_stock_item_id_by_sku(sku: str) -> str:
 
 def get_stock_level_by_stock_id(stock_item_id: str) -> models.StockLevelInfo:
     """Return stock level information for a product by stock item ID."""
-    stock_level_data = make_request(GetStockLevel, stock_item_id=stock_item_id)
-    return models.StockLevelInfo(stock_level_data[0])
+    response = make_request(GetStockLevel, stock_item_id=stock_item_id)
+    try:
+        return models.StockLevelInfo(response[0])
+    except (KeyError, IndexError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
 
 
 def get_stock_level_by_sku(sku: str) -> models.StockLevelInfo:
     """Return stock level information for a product by stock item ID."""
     stock_item_id = get_stock_item_id_by_sku(sku=sku)
-    stock_level_data = make_request(GetStockLevel, stock_item_id=stock_item_id)
-    return models.StockLevelInfo(stock_level_data[0])
+    response = make_request(GetStockLevel, stock_item_id=stock_item_id)
+    try:
+        stock_level_info = models.StockLevelInfo(response[0])
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return stock_level_info
 
 
 def set_stock_level(
@@ -52,13 +64,18 @@ def set_stock_level(
         changes: tuple(tuple(SKU, level)).
         location_id: The ID of the product's location.
     """
-    updated_stock_data = make_request(
+    response = make_request(
         SetStockLevelBySKU,
         location_id=location_id,
         changes=changes,
         change_source=change_source,
     )
-    return [models.StockLevelInfo(_) for _ in updated_stock_data]
+    try:
+        stock_level_info = [models.StockLevelInfo(_) for _ in response]
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return stock_level_info
 
 
 def add_image_to_inventory_item(
@@ -68,20 +85,32 @@ def add_image_to_inventory_item(
     is_main: bool = False,
 ) -> models.InventoryItemImage:
     """Add an image to a product."""
-    inventory_image = make_request(
+    response = make_request(
         AddImageToInventoryItem,
         item_number=sku,
         is_main=is_main,
         image_url=image_url,
         stock_item_id=stock_item_id,
     )
-    return models.InventoryItemImage(inventory_image)
+    try:
+        inventory_item_image = models.InventoryItemImage(response)
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return inventory_item_image
 
 
 def get_inventory_item_images(inventory_item_id: str) -> list[models.StockItemImage]:
     """Get image information for a product."""
     response = make_request(GetInventoryItemImages, inventory_item_id=inventory_item_id)
-    return [models.StockItemImage(stock_item_image) for stock_item_image in response]
+    try:
+        stock_item_images = [
+            models.StockItemImage(stock_item_image) for stock_item_image in response
+        ]
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return stock_item_images
 
 
 class UpdateImageRequster(MultiItemRequest):

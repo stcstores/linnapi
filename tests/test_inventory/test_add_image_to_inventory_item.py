@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from linnapi import inventory
+from linnapi import exceptions, inventory
 from linnapi.models import InventoryItemImage
 from linnapi.requests.inventory import AddImageToInventoryItem
 
@@ -36,6 +36,13 @@ def add_image_to_inventory_item_response():
 def mock_make_request(add_image_to_inventory_item_response):
     with patch("linnapi.inventory.make_request") as mock_request:
         mock_request.return_value = add_image_to_inventory_item_response
+        yield mock_request
+
+
+@pytest.fixture
+def mock_make_request_with_invalid_response():
+    with patch("linnapi.inventory.make_request") as mock_request:
+        mock_request.return_value = {"invalid_key": "invalid_value"}
         yield mock_request
 
 
@@ -108,3 +115,12 @@ def test_add_image_to_inventory_item_return_value(
     )
     assert type(returned_value) == InventoryItemImage
     assert returned_value.image_id == add_image_to_inventory_item_response["ImageId"]
+
+
+def test_add_image_to_inventory_item_invalid_response(
+    mock_make_request_with_invalid_response, sku, image_url
+):
+    with pytest.raises(exceptions.InvalidResponseError):
+        inventory.add_image_to_inventory_item(
+            sku=sku, image_url=image_url, is_main=True
+        )

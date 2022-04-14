@@ -24,5 +24,5 @@ class InvalidResponseError(ValueError):
     """Exception raised wthen and API request returns an invalid response."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Exception raised when making a request without a session token."""
+        """Exception raised wthen and API request returns an invalid response."""
         super().__init__(*args, **kwargs)

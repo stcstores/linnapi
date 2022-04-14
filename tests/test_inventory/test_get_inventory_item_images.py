@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from linnapi import inventory, models
+from linnapi import exceptions, inventory, models
 from linnapi.requests.inventory import GetInventoryItemImages
 
 
@@ -49,6 +49,13 @@ def mock_multiple_response(multiple_response):
         yield mock_make_request
 
 
+@pytest.fixture
+def mock_invalid_response():
+    with patch("linnapi.inventory.make_request") as mock_make_request:
+        mock_make_request.return_value = {"invalid_key": "invalid_value"}
+        yield mock_make_request
+
+
 def test_get_inventory_item_images_makes_request(
     mock_single_response, inventory_item_id
 ):
@@ -76,3 +83,10 @@ def test_get_inventory_item_images_single_multiple_value(
     assert all(
         (isinstance(value, models.StockItemImage) is True for value in returned_value)
     )
+
+
+def test_get_inventory_item_images_with_invalid_response(
+    mock_invalid_response, inventory_item_id
+):
+    with pytest.raises(exceptions.InvalidResponseError):
+        inventory.get_inventory_item_images(inventory_item_id)
