@@ -645,7 +645,7 @@ types-urllib3 = "<1.27"
 
 [[package]]
 name = "types-toml"
-version = "0.10.4"
+version = "0.10.5"
 description = "Typing stubs for toml"
 category = "dev"
 optional = false
@@ -683,7 +683,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "60d2d19dcfb1bc06eed4f2d064b43e337b4a78e1915ae618e8fe3b7486d8b986"
+content-hash = "9886929443351ae02b1e6cf0280fccb374fb589e7de26854437a4f33bce344cb"
 
 [metadata.files]
 alabaster = [
@@ -1029,8 +1029,8 @@ types-requests = [
     {file = "types_requests-2.27.19-py3-none-any.whl", hash = "sha256:c6c5384677d98f212516de50c4b2c38ef659b93008fbc5bb4b81726138bc8485"},
 ]
 types-toml = [
-    {file = "types-toml-0.10.4.tar.gz", hash = "sha256:9340e7c1587715581bb13905b3af30b79fe68afaccfca377665d5e63b694129a"},
-    {file = "types_toml-0.10.4-py3-none-any.whl", hash = "sha256:4a9ffd47bbcec49c6fde6351a889b2c1bd3c0ef309fa0eed60dc28e58c8b9ea6"},
+    {file = "types-toml-0.10.5.tar.gz", hash = "sha256:f949463a388200be392ef9399dbad3e1e3bbe6d4543d84ad93d96c3fda028080"},
+    {file = "types_toml-0.10.5-py3-none-any.whl", hash = "sha256:c1bed5926538aa9c4725cd369c250c47310f16f47d20611b7baef5988fed8634"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.11.tar.gz", hash = "sha256:24d64e441168851eb05f1d022de18ae31558f5649c8f1117e384c2e85e31315b"},
