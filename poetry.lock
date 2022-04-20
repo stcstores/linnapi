@@ -634,7 +634,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.27.16"
+version = "2.27.19"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -683,7 +683,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "b052af80da6b8809c9f9a57609b3708f313d8fdfd7f89ffa949e047a9ae1b32e"
+content-hash = "60d2d19dcfb1bc06eed4f2d064b43e337b4a78e1915ae618e8fe3b7486d8b986"
 
 [metadata.files]
 alabaster = [
@@ -1025,8 +1025,8 @@ types-pytz = [
     {file = "types_pytz-2021.3.6-py3-none-any.whl", hash = "sha256:6805c72d51118923c5bf98633c39593d5b464d2ab49a803440e2d7ab6b8920df"},
 ]
 types-requests = [
-    {file = "types-requests-2.27.16.tar.gz", hash = "sha256:c8010c18b291a7efb60b1452dbe12530bc25693dd657e70c62803fcdc4bffe9b"},
-    {file = "types_requests-2.27.16-py3-none-any.whl", hash = "sha256:2437a5f4d16c0c8bd7539a8126d492b7aeb41e6cda670d76b286c7f83a658d42"},
+    {file = "types-requests-2.27.19.tar.gz", hash = "sha256:795e378117088d1e4bf41a2c01a153b73d6ea40aa9d7c0ac753abde84c0d3a8f"},
+    {file = "types_requests-2.27.19-py3-none-any.whl", hash = "sha256:c6c5384677d98f212516de50c4b2c38ef659b93008fbc5bb4b81726138bc8485"},
 ]
 types-toml = [
     {file = "types-toml-0.10.4.tar.gz", hash = "sha256:9340e7c1587715581bb13905b3af30b79fe68afaccfca377665d5e63b694129a"},
