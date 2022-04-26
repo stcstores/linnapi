@@ -67,6 +67,11 @@ def set_stock_level_response():
 
 
 @pytest.fixture
+def short_date_time_string():
+    return "2022-04-19T07:01:37Z"
+
+
+@pytest.fixture
 def stock_level_info_with_get_stock_level_response(get_stock_level_response):
     return models.StockLevelInfo(get_stock_level_response)
 
@@ -84,6 +89,15 @@ def test_stock_level_info_with_get_stock_level_response_parse_date_time_method(
         year=2022, month=3, day=15, hour=14, minute=31, second=9, microsecond=103
     )
     assert models.StockLevelInfo.parse_date_time(date_string) == date
+
+
+def test_stock_level_info_with_get_stock_level_response_parse_date_time_method_with_short_date_time(
+    short_date_time_string,
+):
+    date = dt.datetime(
+        year=2022, month=4, day=19, hour=7, minute=1, second=37, microsecond=0
+    )
+    assert models.StockLevelInfo.parse_date_time(short_date_time_string) == date
 
 
 def test_stock_level_info_with_get_stock_level_response_sets_raw(

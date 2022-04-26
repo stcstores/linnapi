@@ -48,7 +48,10 @@ class StockLevelInfo:
         date_time_string = date_time_string.replace("Z", "")
         date, time = date_time_string.split("T")
         year, month, day = date.split("-")
-        time, microsecond = time.split(".")
+        if "." in time:
+            time, microsecond = time.split(".")
+        else:
+            microsecond = "0"
         hour, minute, second = time.split(":")
         date_time = dt.datetime(
             year=int(year),
