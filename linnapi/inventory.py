@@ -18,7 +18,6 @@ from linnapi.requests.inventory import (
 def get_stock_item_ids_by_sku(skus: list[str]) -> MutableMapping[str, str]:
     """Return the stock item ID for a product SKU."""
     response = make_request(GetStockItemIDsBySKU, skus=skus)
-    print(response)
     try:
         return {item["SKU"]: item["StockItemId"] for item in response["Items"]}
     except (KeyError, IndexError, TypeError):
