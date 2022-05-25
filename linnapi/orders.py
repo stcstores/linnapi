@@ -1,0 +1,47 @@
+"""Methods for interacting with Linnworks orders."""
+
+from linnapi import exceptions, models
+from linnapi.request import make_request
+from linnapi.requests.orders import GetProcessedAuditTrail, SearchProcessedOrders
+
+
+def search_processed_orders(search_term: str) -> list[models.ProcessedOrder]:
+    """Return a search for processed orders."""
+    response = make_request(SearchProcessedOrders, search_term=search_term)
+    try:
+        processed_orders = [
+            models.ProcessedOrder(order)
+            for order in response["ProcessedOrders"]["Data"]
+        ]
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return processed_orders
+
+
+def get_order_guid_by_order_id(order_id: str) -> str:
+    """Return the GUID id for an order by order ID."""
+    search_results = search_processed_orders(search_term=str(order_id))
+    if len(search_results) == 0:
+        raise exceptions.InvalidResponseError(
+            "Search did not return any procesed orders."
+        )
+    if len(search_results) > 1:
+        raise exceptions.InvalidResponseError(
+            "Search returned multiple processed orders."
+        )
+    order_guid: str = search_results[0].order_guid
+    return order_guid
+
+
+def get_processed_order_audit_trail(
+    order_guid: str,
+) -> list[models.OrderAuditTrailEntry]:
+    """Return the the audit trail for a processed order."""
+    response = make_request(GetProcessedAuditTrail, order_guid=order_guid)
+    try:
+        audit_trail = [models.OrderAuditTrailEntry(entry) for entry in response]
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return audit_trail

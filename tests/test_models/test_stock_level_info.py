@@ -1,5 +1,3 @@
-import datetime as dt
-
 import pytest
 
 from linnapi import models
@@ -67,11 +65,6 @@ def set_stock_level_response():
 
 
 @pytest.fixture
-def short_date_time_string():
-    return "2022-04-19T07:01:37Z"
-
-
-@pytest.fixture
 def stock_level_info_with_get_stock_level_response(get_stock_level_response):
     return models.StockLevelInfo(get_stock_level_response)
 
@@ -79,25 +72,6 @@ def stock_level_info_with_get_stock_level_response(get_stock_level_response):
 @pytest.fixture
 def stock_level_info_with_set_stock_level_response(set_stock_level_response):
     return models.StockLevelInfo(set_stock_level_response)
-
-
-def test_stock_level_info_with_get_stock_level_response_parse_date_time_method(
-    get_stock_level_response,
-):
-    date_string = get_stock_level_response["LastUpdateDate"]
-    date = dt.datetime(
-        year=2022, month=3, day=15, hour=14, minute=31, second=9, microsecond=103
-    )
-    assert models.StockLevelInfo.parse_date_time(date_string) == date
-
-
-def test_stock_level_info_with_get_stock_level_response_parse_date_time_method_with_short_date_time(
-    short_date_time_string,
-):
-    date = dt.datetime(
-        year=2022, month=4, day=19, hour=7, minute=1, second=37, microsecond=0
-    )
-    assert models.StockLevelInfo.parse_date_time(short_date_time_string) == date
 
 
 def test_stock_level_info_with_get_stock_level_response_sets_raw(
@@ -167,9 +141,7 @@ def test_stock_level_info_with_get_stock_level_response_sets_last_update_date(
 ):
     assert (
         stock_level_info_with_get_stock_level_response.last_update_date
-        == models.StockLevelInfo.parse_date_time(
-            get_stock_level_response["LastUpdateDate"]
-        )
+        == models.parse_date_time(get_stock_level_response["LastUpdateDate"])
     )
 
 
@@ -216,14 +188,6 @@ def test_stock_level_info_with_get_stock_level_response_sets_location_id(
         stock_level_info_with_get_stock_level_response.location_id
         == get_stock_level_response["Location"]["StockLocationId"]
     )
-
-
-def test_stock_level_info_with_set_stock_level_response_parse_date_time_method(
-    set_stock_level_response,
-):
-    date_string = set_stock_level_response["LastUpdateDate"]
-    date = dt.datetime(2022, 3, 18, 15, 22, 6, 273)
-    assert models.StockLevelInfo.parse_date_time(date_string) == date
 
 
 def test_stock_level_info_with_set_stock_level_response_sets_raw(
@@ -293,9 +257,7 @@ def test_stock_level_info_with_set_stock_level_response_sets_last_update_date(
 ):
     assert (
         stock_level_info_with_set_stock_level_response.last_update_date
-        == models.StockLevelInfo.parse_date_time(
-            set_stock_level_response["LastUpdateDate"]
-        )
+        == models.parse_date_time(set_stock_level_response["LastUpdateDate"])
     )
 
 
