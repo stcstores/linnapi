@@ -16,9 +16,9 @@ def order_guid():
 
 
 @pytest.fixture
-def mock_search_processed_orders(order_guid):
+def mock_search_processed_orders(order_id, order_guid):
     with patch("linnapi.orders.search_processed_orders") as mock_search:
-        mock_search.return_value = [Mock(order_guid=order_guid)]
+        mock_search.return_value = [Mock(order_id=order_id, order_guid=order_guid)]
         yield mock_search
 
 
@@ -51,10 +51,21 @@ def test_get_order_guid_by_order_id_raises_when_no_orders_are_found(
     assert str(excinfo.value) == "Search did not return any procesed orders."
 
 
+def test_get_order_guid_by_order_id_raises_when_orders_are_returned_but_do_not_match_requested_order_id(
+    mock_search_processed_orders, order_id, order_guid
+):
+    mock_search_processed_orders.return_value = [
+        Mock(order_id="7403753402", order_guid=order_guid)
+    ]
+    with pytest.raises(exceptions.InvalidResponseError) as excinfo:
+        orders.get_order_guid_by_order_id(int(order_id))
+    assert str(excinfo.value) == f"Order matching order ID {order_id} not found."
+
+
 def test_get_order_guid_by_order_id_raises_when_multiple_orders_are_found(
     mock_search_processed_orders, order_id
 ):
     mock_search_processed_orders.return_value = [Mock(), Mock()]
     with pytest.raises(exceptions.InvalidResponseError) as excinfo:
         orders.get_order_guid_by_order_id(int(order_id))
-    assert str(excinfo.value) == "Search returned multiple processed orders."
+    assert str(excinfo.value) == f"Order matching order ID {order_id} not found."

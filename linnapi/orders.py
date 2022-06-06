@@ -26,12 +26,12 @@ def get_order_guid_by_order_id(order_id: str) -> str:
         raise exceptions.InvalidResponseError(
             "Search did not return any procesed orders."
         )
-    if len(search_results) > 1:
-        raise exceptions.InvalidResponseError(
-            "Search returned multiple processed orders."
-        )
-    order_guid: str = search_results[0].order_guid
-    return order_guid
+    for order in search_results:
+        if str(order.order_id) == str(order_id):
+            return str(search_results[0].order_guid)
+    raise exceptions.InvalidResponseError(
+        f"Order matching order ID {order_id} not found."
+    )
 
 
 def get_processed_order_audit_trail(
