@@ -50,8 +50,8 @@ def test_get_stock_item_id_by_sku_return_value(
 def test_get_stock_item_id_by_sku_calls_get_stock_item_id_by_sku(
     mock_get_stock_item_ids, sku, stock_item_id
 ):
-    inventory.get_stock_item_id_by_sku(sku) == stock_item_id
-    mock_get_stock_item_ids.assert_called_once_with(skus=[sku])
+    inventory.get_stock_item_id_by_sku(sku)
+    mock_get_stock_item_ids.assert_called_once_with(sku)
 
 
 def test_get_stock_item_id_by_sku_with_invalid_response(mock_get_stock_item_ids):

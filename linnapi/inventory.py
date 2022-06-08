@@ -10,12 +10,13 @@ from linnapi.requests.inventory import (
     GetInventoryItemImages,
     GetStockItemIDsBySKU,
     GetStockLevel,
+    GetStockLevelBatch,
     SetStockLevelBySKU,
     UpdateImages,
 )
 
 
-def get_stock_item_ids_by_sku(skus: list[str]) -> MutableMapping[str, str]:
+def get_stock_item_ids_by_sku(*skus: str) -> MutableMapping[str, str]:
     """Return the stock item ID for a product SKU."""
     response = make_request(GetStockItemIDsBySKU, skus=skus)
     try:
@@ -26,7 +27,7 @@ def get_stock_item_ids_by_sku(skus: list[str]) -> MutableMapping[str, str]:
 
 def get_stock_item_id_by_sku(sku: str) -> str:
     """Return the stock item ID for a product SKU."""
-    stock_item_ids = get_stock_item_ids_by_sku(skus=[sku])
+    stock_item_ids = get_stock_item_ids_by_sku(sku)
     try:
         return stock_item_ids[sku]
     except KeyError:
@@ -52,6 +53,24 @@ def get_stock_level_by_sku(sku: str) -> models.StockLevelInfo:
         raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
     else:
         return stock_level_info
+
+
+def get_stock_levels_by_skus(*skus: str) -> dict[str, models.StockLevelInfo]:
+    """Return stock level information for multliple SKUs."""
+    stock_item_id_lookup = get_stock_item_ids_by_sku(*skus)
+    stock_item_ids = list(stock_item_id_lookup.values())
+    response = make_request(GetStockLevelBatch, stock_item_ids=stock_item_ids)
+    stock_levels = {}
+    try:
+        for response_item in response:
+            for stock_level in response_item["StockItemLevels"]:
+                stock_level_info = models.StockLevelInfo(stock_level)
+                stock_levels[stock_level_info.sku] = stock_level_info
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    if set(skus) != set(stock_levels.keys()):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    return stock_levels
 
 
 def set_stock_level(
