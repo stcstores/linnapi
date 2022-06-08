@@ -1,5 +1,5 @@
 # Uncomment this if your project is hosted on GitHub:
-# github_url = https://github.com/<user or organization>/<project>/
+github_url = "https://github.com/stcstores/linnapi/"
 
 [version]
 current = "0.0.1"
@@ -19,13 +19,11 @@ regex = '''
 message_template = "Bump to {new_version}"
 tag_template = "v{new_version}"
 
-# For each file to patch, add a [[file]] config section containing
-# the path of the file, relative to the tbump.toml location.
+# For each file to patch, add a [[file]] config
+# section containing the path of the file, relative to the
+# tbump.toml location.
 [[file]]
 src = "pyproject.toml"
-
-[[file]]
-src = "docs/source/conf.py"
 
 # You can specify a list of commands to
 # run after the files have been patched
