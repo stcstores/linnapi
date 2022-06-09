@@ -8,6 +8,7 @@ from linnapi.requests.inventory import (
     AddImageToInventoryItem,
     DeleteImagesFromInventoryItem,
     GetInventoryItemImages,
+    GetItemChangesHistory,
     GetStockItemIDsBySKU,
     GetStockLevel,
     GetStockLevelBatch,
@@ -129,6 +130,39 @@ def get_inventory_item_images(inventory_item_id: str) -> list[models.StockItemIm
         raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
     else:
         return stock_item_images
+
+
+def get_stock_level_history_by_stock_item_id(
+    stock_item_id: str,
+    location_id: str,
+    entries_per_page: int = 500,
+    page_number: int = 1,
+) -> list[models.StockItemHistoryRecord]:
+    """Return a history of stock level changes for a stock item ID."""
+    response = make_request(
+        GetItemChangesHistory,
+        stock_item_id=stock_item_id,
+        location_id=location_id,
+        entries_per_page=entries_per_page,
+        page_number=page_number,
+    )
+    try:
+        records = [models.StockItemHistoryRecord(_) for _ in response["Data"]]
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    else:
+        return sorted(records, key=lambda x: x.timestamp, reverse=True)
+
+
+def get_stock_level_history_by_sku(
+    sku: str,
+    location_id: str,
+) -> list[models.StockItemHistoryRecord]:
+    """Return a history of stock level changes for a product SKU."""
+    stock_item_id = get_stock_item_id_by_sku(sku)
+    return get_stock_level_history_by_stock_item_id(
+        stock_item_id=stock_item_id, location_id=location_id
+    )
 
 
 class UpdateImageRequster(MultiItemRequest):

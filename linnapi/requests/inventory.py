@@ -213,3 +213,28 @@ class DeleteImagesFromInventoryItem(LinnworksAPIRequest):
     ) -> str:
         """Parse the request response."""
         return response.text
+
+
+class GetItemChangesHistory(LinnworksAPIRequest):
+    """Get the stock change history for an item.
+
+    Kwargs:
+
+    """
+
+    URL = "https://eu-ext.linnworks.net/api/Stock/GetItemChangesHistory"
+    METHOD = LinnworksAPIRequest.POST
+
+    @classmethod
+    def params(cls, *args: Any, **kwargs: Any) -> dict[str, Any]:
+        """Return request JSON post data."""
+        stock_item_id = kwargs.get("stock_item_id")
+        location_id = kwargs.get("location_id", "")
+        entries_per_page = kwargs.get("entries_per_page", 500)
+        page_number = kwargs.get("page_number", 1)
+        return {
+            "stockItemId": stock_item_id,
+            "locationId": location_id,
+            "entriesPerPage": entries_per_page,
+            "pageNumber": page_number,
+        }

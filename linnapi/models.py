@@ -167,3 +167,16 @@ class OrderAuditTrailEntry:
         self.tag: str = audit_trail_entry["Tag"]
         self.updated_by = audit_trail_entry["UpdatedBy"]
         self.type_description: str = audit_trail_entry["TypeDescription"]
+
+
+class StockItemHistoryRecord:
+    """Model for stock item history records."""
+
+    def __init__(self, stock_item_record: dict[str, Any]):
+        """Model for stock item history records."""
+        self.raw = stock_item_record
+        self.timestamp = parse_date_time(stock_item_record["Date"])
+        self.stock_level = stock_item_record["Level"]
+        self.text = stock_item_record["Note"]
+        self.relative_change = stock_item_record["ChangeQty"]
+        self.stock_item_id = stock_item_record["StockItemId"]
