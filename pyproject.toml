@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "linnapi"
-version = "0.0.3"
+version = "0.0.4"
 description = "Linnworks API integration"
 authors = ["Luke Shiner <luke@lukeshiner.com>"]
 license = "MIT"
