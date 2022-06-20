@@ -37,6 +37,15 @@ def test_order_audit_trail_entry_sets_history_id(
     )
 
 
+def test_order_audit_trail_entry_sets_audit_type(
+    order_audit_trail_data, order_audit_trail_entry_with_data
+):
+    assert (
+        order_audit_trail_entry_with_data.audit_type
+        == order_audit_trail_data["fkOrderHistoryTypeId"]
+    )
+
+
 def test_order_audit_trail_entry_sets_order_guid(
     order_audit_trail_data, order_audit_trail_entry_with_data
 ):

@@ -166,6 +166,7 @@ class OrderAuditTrailEntry:
         self.timestamp: dt.datetime = parse_date_time(audit_trail_entry["DateStamp"])
         self.tag: str = audit_trail_entry["Tag"]
         self.updated_by = audit_trail_entry["UpdatedBy"]
+        self.audit_type = audit_trail_entry["fkOrderHistoryTypeId"]
         self.type_description: str = audit_trail_entry["TypeDescription"]
 
 
