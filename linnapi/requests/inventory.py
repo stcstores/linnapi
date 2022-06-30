@@ -238,3 +238,16 @@ class GetItemChangesHistory(LinnworksAPIRequest):
             "entriesPerPage": entries_per_page,
             "pageNumber": page_number,
         }
+
+
+class BatchGetInventoryItemChannelSKUs(LinnworksAPIRequest):
+    """Get channel skus for a list of inventory items."""
+
+    URL = "https://eu-ext.linnworks.net/api/Inventory/BatchGetInventoryItemChannelSKUs"
+    METHOD = LinnworksAPIRequest.POST
+
+    @classmethod
+    def json(cls, *args: Any, **kwargs: Any) -> dict[str, Any] | list[Any]:
+        """Return request JSON post data."""
+        stock_item_ids = kwargs["stock_item_ids"]
+        return {"inventoryItemIds": list(stock_item_ids)}

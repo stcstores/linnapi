@@ -6,6 +6,7 @@ from linnapi import exceptions, models
 from linnapi.request import MultiItemRequest, make_request
 from linnapi.requests.inventory import (
     AddImageToInventoryItem,
+    BatchGetInventoryItemChannelSKUs,
     DeleteImagesFromInventoryItem,
     GetInventoryItemImages,
     GetItemChangesHistory,
@@ -207,3 +208,33 @@ class DeleteImagesRequester(MultiItemRequest):
         """
         kwargs = {"stock_item_id": stock_item_id, "image_url": image_url}
         self._add_request(kwargs)
+
+
+def get_item_channel_skus(
+    *stock_item_ids: str,
+) -> dict[str, list[models.ChannelLinkedItem]]:
+    """Return details of channel listings linked to stock items."""
+    response = make_request(
+        BatchGetInventoryItemChannelSKUs, stock_item_ids=stock_item_ids
+    )
+    channel_skus = {}
+    try:
+        for stock_item in response:
+            item_channel_skus = [
+                models.ChannelLinkedItem(item) for item in stock_item["ChannelSkus"]
+            ]
+            channel_skus[stock_item["StockItemId"]] = item_channel_skus
+    except (KeyError, IndexError, TypeError):
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    return channel_skus
+
+
+def get_channel_skus_by_skus(*skus: str) -> dict[str, list[models.ChannelLinkedItem]]:
+    """Return details of channel listings linked to stock items by SKU."""
+    sku_stock_item_ids = get_stock_item_ids_by_sku(*skus)
+    stock_item_ids = list(sku_stock_item_ids.values())
+    channel_items = get_item_channel_skus(*stock_item_ids)
+    return {
+        sku: channel_items[stock_item_id]
+        for sku, stock_item_id in sku_stock_item_ids.items()
+    }

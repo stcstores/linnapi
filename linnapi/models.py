@@ -181,3 +181,26 @@ class StockItemHistoryRecord:
         self.text = stock_item_record["Note"]
         self.relative_change = stock_item_record["ChangeQty"]
         self.stock_item_id = stock_item_record["StockItemId"]
+
+
+class ChannelLinkedItem:
+    """Model for channel linked items."""
+
+    def __init__(self, channel_linked_item: dict[str, Any]):
+        """Model for channel linked items."""
+        self.raw = channel_linked_item
+        self.channel_sku_id = channel_linked_item["ChannelSKURowId"]
+        self.sku = channel_linked_item["SKU"]
+        self.source = channel_linked_item["Source"]
+        self.sub_source = channel_linked_item["SubSource"]
+        self.update_status = channel_linked_item["UpdateStatus"]
+        self.channel_reference_id = channel_linked_item["ChannelReferenceId"]
+        self.last_update = parse_date_time(channel_linked_item["LastUpdate"])
+        self.max_listed_quantity = channel_linked_item["MaxListedQuantity"]
+        self.end_when_stock = channel_linked_item["EndWhenStock"]
+        self.submitted_quantity = channel_linked_item["SubmittedQuantity"]
+        self.listed_quantity = channel_linked_item["ListedQuantity"]
+        self.stock_percentage = channel_linked_item["StockPercentage"]
+        self.ignore_sync = channel_linked_item["IgnoreSync"]
+        self.is_multi_location = channel_linked_item["IsMultiLocation"]
+        self.stock_item_id = channel_linked_item["StockItemId"]
