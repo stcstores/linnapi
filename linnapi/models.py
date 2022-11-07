@@ -16,15 +16,18 @@ def parse_date_time(date_time_string: str) -> dt.datetime:
     else:
         microsecond = "0"
     hour, minute, second = time.split(":")
-    date_time = dt.datetime(
-        year=int(year),
-        month=int(month),
-        day=int(day),
-        hour=int(hour),
-        minute=int(minute),
-        second=int(second),
-        microsecond=int(microsecond),
-    )
+    try:
+        date_time = dt.datetime(
+            year=int(year),
+            month=int(month),
+            day=int(day),
+            hour=int(hour),
+            minute=int(minute),
+            second=int(second),
+            microsecond=int(microsecond),
+        )
+    except ValueError:
+        raise Exception(f'Error parsing datestring "{date_time_string}".')
     date_time.replace(tzinfo=pytz.utc)
     return date_time
 
