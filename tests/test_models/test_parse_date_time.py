@@ -31,3 +31,15 @@ def test_parse_date_time_method_with_short_date_time(
         year=2022, month=4, day=19, hour=7, minute=1, second=37, microsecond=0
     )
     assert models.parse_date_time(short_date_time_string) == date
+
+
+def test_parse_date_time_method_ignores_long_microseconds():
+    date_string = "2022-03-15T14:31:09.1039999Z"
+    assert models.parse_date_time(date_string).microsecond == 103999
+
+
+def test_parse_date_time_method_raises_value_error_for_invalid_input():
+    with pytest.raises(ValueError) as exec_info:
+        date_string = "20246542-03-15T14:31:09.1039999Z"
+        models.parse_date_time(date_string)
+        assert date_string in exec_info.value

@@ -8,11 +8,12 @@ import pytz
 
 def parse_date_time(date_time_string: str) -> dt.datetime:
     """Return a date time string as datetime.datetime."""
-    date_time_string = date_time_string.replace("Z", "")
-    date, time = date_time_string.split("T")
+    numeric_string = date_time_string.replace("Z", "")
+    date, time = numeric_string.split("T")
     year, month, day = date.split("-")
     if "." in time:
         time, microsecond = time.split(".")
+        microsecond = microsecond[:6]
     else:
         microsecond = "0"
     hour, minute, second = time.split(":")
@@ -27,7 +28,7 @@ def parse_date_time(date_time_string: str) -> dt.datetime:
             microsecond=int(microsecond),
         )
     except ValueError:
-        raise Exception(f'Error parsing datestring "{date_time_string}".')
+        raise ValueError(f'Error parsing datestring "{date_time_string}".')
     date_time.replace(tzinfo=pytz.utc)
     return date_time
 
