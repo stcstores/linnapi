@@ -17,5 +17,6 @@ repos:
     hooks:
       - id: mypy
         args: [--config-file=mypy.ini]
-        additional_dependencies: ["types-requests", "types-toml", "types-pytz"]
+        additional_dependencies:
+          ["types-requests", "types-toml", "types-pytz", "pytest"]
         exclude: docs/
