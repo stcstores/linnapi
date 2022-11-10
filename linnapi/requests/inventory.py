@@ -251,3 +251,23 @@ class BatchGetInventoryItemChannelSKUs(LinnworksAPIRequest):
         """Return request JSON post data."""
         stock_item_ids = kwargs["stock_item_ids"]
         return {"inventoryItemIds": list(stock_item_ids)}
+
+
+class DeleteInventoryItemChannelSKUs(LinnworksAPIRequest):
+    """Delete channel SKUs from inventory items."""
+
+    URL = "https://eu-ext.linnworks.net/api/Inventory/DeleteInventoryItemChannelSKUs"
+    METHOD = LinnworksAPIRequest.POST
+
+    @classmethod
+    def json(cls, *args: Any, **kwargs: Any) -> dict[str, Any] | list[Any]:
+        """Return request JSON post data."""
+        inventory_item_channel_sku_ids = kwargs["inventory_item_channel_sku_ids"]
+        return {"inventoryItemChannelSKUIds": inventory_item_channel_sku_ids}
+
+    @classmethod
+    def parse_response(
+        cls, response: requests.Response, *args: Any, **kwargs: Any
+    ) -> bool:
+        """Parse the request response."""
+        return bool(response.status_code == 204)

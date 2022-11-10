@@ -8,6 +8,7 @@ from linnapi.requests.inventory import (
     AddImageToInventoryItem,
     BatchGetInventoryItemChannelSKUs,
     DeleteImagesFromInventoryItem,
+    DeleteInventoryItemChannelSKUs,
     GetInventoryItemImages,
     GetItemChangesHistory,
     GetStockItemIDsBySKU,
@@ -238,3 +239,15 @@ def get_channel_skus_by_skus(*skus: str) -> dict[str, list[models.ChannelLinkedI
         sku: channel_items[stock_item_id]
         for sku, stock_item_id in sku_stock_item_ids.items()
     }
+
+
+def delete_channel_sku_links(*inventory_item_channel_sku_ids: list[str]) -> None:
+    """Delete a channel link by channel link ID."""
+    response = make_request(
+        DeleteInventoryItemChannelSKUs,
+        inventory_item_channel_sku_ids=inventory_item_channel_sku_ids,
+    )
+    if response is False:
+        raise exceptions.InvalidResponseError(
+            "Delete channel item SKU link returned non-success response."
+        )
