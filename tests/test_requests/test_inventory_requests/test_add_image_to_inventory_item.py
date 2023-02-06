@@ -105,7 +105,6 @@ def test_add_image_to_inventory_item_json_with_item_number_and_stock_item_id(
 def test_add_image_to_inventory_item_json_without_item_number_or_stock_item_id(
     image_url,
 ):
-
     with pytest.raises(ValueError):
         inventory.AddImageToInventoryItem.json(
             image_url=image_url,
