@@ -26,3 +26,11 @@ class InvalidResponseError(ValueError):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Exception raised wthen and API request returns an invalid response."""
         super().__init__(*args, **kwargs)
+
+
+class IncompleteResponseError(ValueError):
+    """Exception raised wthen and API request returns a response with missing data."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Exception raised wthen and API request returns a response with missing data."""
+        super().__init__(*args, **kwargs)

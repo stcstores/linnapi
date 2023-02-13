@@ -212,7 +212,7 @@ def test_invalid_response(
 def test_empty_response(
     mock_get_stock_item_ids_by_sku, mock_make_request_with_empty_response, skus
 ):
-    with pytest.raises(exceptions.InvalidResponseError):
+    with pytest.raises(exceptions.IncompleteResponseError):
         inventory.get_stock_levels_by_skus(*skus)
 
 
