@@ -955,14 +955,14 @@ files = [
 
 [[package]]
 name = "types-pytz"
-version = "2022.7.0.0"
+version = "2022.7.1.1"
 description = "Typing stubs for pytz"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-pytz-2022.7.0.0.tar.gz", hash = "sha256:4f20c2953b3a3a0587e94489ec4c9e02c3d3aedb9ba5cd7e796e12f4cfa7027e"},
-    {file = "types_pytz-2022.7.0.0-py3-none-any.whl", hash = "sha256:1509f182f686ab76e9a8234f22b00b8f50d239974db0cf924b7ae8674bb31a6f"},
+    {file = "types-pytz-2022.7.1.1.tar.gz", hash = "sha256:58010bb1d6f7ba7284fba264b3bc9c2480ab586201e25128ed2aadea4c298b33"},
+    {file = "types_pytz-2022.7.1.1-py3-none-any.whl", hash = "sha256:1d024c1805b7a5d6899d236b7d5ee468cdd2093b70209640379eb80be593c453"},
 ]
 
 [[package]]
@@ -1036,4 +1036,4 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d2d1cf7d371fb032333522f39b3c58f25cfa4b53f5cb7aefcb0d9b0831f58ff9"
+content-hash = "c2d45cc820a2cfd2c979c9df0a76c22b73ecd34e2bc68844a558ddfc135ae813"
