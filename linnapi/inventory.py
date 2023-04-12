@@ -72,7 +72,10 @@ def get_stock_levels_by_skus(*skus: str) -> dict[str, models.StockLevelInfo]:
     except (KeyError, IndexError, TypeError) as e:
         raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     if set(skus) != set(stock_levels.keys()):
-        raise exceptions.IncompleteResponseError(f"Invalid Response: {response}")
+        missing_skus = set(skus) - set(stock_levels.keys())
+        raise exceptions.IncompleteResponseError(
+            f"Incomplete Response: Missing SKUs {list(missing_skus)}"
+        )
     return stock_levels
 
 
