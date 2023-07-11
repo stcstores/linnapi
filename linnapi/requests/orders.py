@@ -16,7 +16,7 @@ class SearchProcessedOrders(LinnworksAPIRequest):
         """Return request JSON post data."""
         search_term: str = kwargs["search_term"]
         page_number: int = kwargs.get("page_number", 1)
-        results_per_page: int = kwargs.get("results_per_page", 100)
+        results_per_page: int = kwargs.get("results_per_page", 500)
         return {
             "request": {
                 "SearchTerm": search_term,

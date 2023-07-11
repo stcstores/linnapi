@@ -1,8 +1,8 @@
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import pytest
 
-from linnapi import exceptions, models, orders
+from linnapi import exceptions, models, orders, requests
 
 
 @pytest.fixture
@@ -96,6 +96,14 @@ def mock_multiple_response(multiple_response):
 
 
 @pytest.fixture
+def mock_multipage_response(multiple_response):
+    multiple_response["ProcessedOrders"]["TotalPages"] = 3
+    with patch("linnapi.orders.make_request") as mock_make_request:
+        mock_make_request.return_value = multiple_response
+        yield mock_make_request
+
+
+@pytest.fixture
 def mock_invalid_response():
     with patch("linnapi.orders.make_request") as mock_make_request:
         mock_make_request.return_value = {"invalid_key": "invalid_value"}
@@ -125,6 +133,39 @@ def test_search_processed_orders_single_multiple_value(
     assert all(
         (isinstance(value, models.ProcessedOrder) is True for value in returned_value)
     )
+
+
+def test_search_processed_orders_with_multiple_pages_requests_all_pages(
+    mock_multipage_response, search_term
+):
+    orders.search_processed_orders(search_term)
+    mock_multipage_response.assert_has_calls(
+        calls=(
+            call(
+                requests.orders.SearchProcessedOrders,
+                search_term=search_term,
+                page_number=1,
+            ),
+            call(
+                requests.orders.SearchProcessedOrders,
+                search_term=search_term,
+                page_number=2,
+            ),
+            call(
+                requests.orders.SearchProcessedOrders,
+                search_term=search_term,
+                page_number=3,
+            ),
+        )
+    )
+    mock_multipage_response.call_count == 3
+
+
+def test_search_processed_orders_with_multiple_pages_returns_all_objects(
+    mock_multipage_response, search_term
+):
+    returned_value = orders.search_processed_orders(search_term)
+    assert len(returned_value) == 9
 
 
 def test_search_processed_orders_with_invalid_response(

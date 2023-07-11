@@ -36,7 +36,7 @@ def test_search_processed_orders_json(search_term):
         "request": {
             "SearchTerm": search_term,
             "PageNumber": 1,
-            "ResultsPerPage": 100,
+            "ResultsPerPage": 500,
         }
     }
     assert (
@@ -49,7 +49,7 @@ def test_search_processed_orders_json_with_page_number(search_term):
         "request": {
             "SearchTerm": search_term,
             "PageNumber": 5,
-            "ResultsPerPage": 100,
+            "ResultsPerPage": 500,
         }
     }
     assert (
