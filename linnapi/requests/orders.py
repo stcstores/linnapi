@@ -30,7 +30,7 @@ class GetProcessedAuditTrail(LinnworksAPIRequest):
     """Return the audit trail for a processed order."""
 
     URL = "https://eu-ext.linnworks.net/api/ProcessedOrders/GetProcessedAuditTrail"
-    METHOD = LinnworksAPIRequest.POST
+    METHOD = LinnworksAPIRequest.GET
 
     @classmethod
     def json(cls, *args: Any, **kwargs: Any) -> dict[str, Any] | list[Any]:

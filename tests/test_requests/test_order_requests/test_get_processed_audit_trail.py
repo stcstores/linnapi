@@ -16,7 +16,7 @@ def test_get_processed_audit_trail_url():
 
 
 def test_get_processed_audit_trail_method():
-    assert orders.GetProcessedAuditTrail.METHOD == "POST"
+    assert orders.GetProcessedAuditTrail.METHOD == "GET"
 
 
 def test_get_processed_audit_trail_headers(order_guid):
