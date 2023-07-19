@@ -38,7 +38,7 @@ def get_order_guid_by_order_id(order_id: str) -> str:
         )
     for order in search_results:
         if str(order.order_id) == str(order_id):
-            return str(search_results[0].order_guid)
+            return str(order.order_guid)
     raise exceptions.InvalidResponseError(
         f"Order matching order ID {order_id} not found."
     )
