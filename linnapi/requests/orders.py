@@ -1,6 +1,6 @@
 """Orders requests."""
 
-from typing import Any
+from typing import Any, MutableMapping
 
 from linnapi.request import LinnworksAPIRequest
 
@@ -33,7 +33,12 @@ class GetProcessedAuditTrail(LinnworksAPIRequest):
     METHOD = LinnworksAPIRequest.GET
 
     @classmethod
-    def json(cls, *args: Any, **kwargs: Any) -> dict[str, Any] | list[Any]:
-        """Return request JSON post data."""
+    def params(cls, *args: Any, **kwargs: Any) -> dict[str, Any]:
+        """Return request URL parameters."""
         order_guid: str = kwargs["order_guid"]
         return {"pkOrderId": order_guid}
+
+    @classmethod
+    def headers(cls, *args: Any, **kwargs: Any) -> MutableMapping[str, str]:
+        """Return request headers."""
+        return {"accept": "application/json"}

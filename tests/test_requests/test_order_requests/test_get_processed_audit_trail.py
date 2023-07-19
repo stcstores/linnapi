@@ -20,11 +20,16 @@ def test_get_processed_audit_trail_method():
 
 
 def test_get_processed_audit_trail_headers(order_guid):
-    assert orders.GetProcessedAuditTrail.headers(order_guid=order_guid) == {}
+    assert orders.GetProcessedAuditTrail.headers(order_guid=order_guid) == {
+        "accept": "application/json"
+    }
 
 
 def test_get_processed_audit_trail_params(order_guid):
-    assert orders.GetProcessedAuditTrail.params(order_guid=order_guid) is None
+    expected_response = {"pkOrderId": order_guid}
+    assert (
+        orders.GetProcessedAuditTrail.params(order_guid=order_guid) == expected_response
+    )
 
 
 def test_get_processed_audit_trail_data(order_guid):
@@ -32,10 +37,7 @@ def test_get_processed_audit_trail_data(order_guid):
 
 
 def test_get_processed_audit_trail_json(order_guid):
-    expected_response = {"pkOrderId": order_guid}
-    assert (
-        orders.GetProcessedAuditTrail.json(order_guid=order_guid) == expected_response
-    )
+    assert orders.GetProcessedAuditTrail.json(order_guid=order_guid) is None
 
 
 def test_get_processed_audit_trail_parse_response(order_guid):
