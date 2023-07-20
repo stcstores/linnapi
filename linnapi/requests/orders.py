@@ -42,3 +42,16 @@ class GetProcessedAuditTrail(LinnworksAPIRequest):
     def headers(cls, *args: Any, **kwargs: Any) -> MutableMapping[str, str]:
         """Return request headers."""
         return {"accept": "application/json"}
+
+
+class GetOrderDetailsByNumOrderId(LinnworksAPIRequest):
+    """Return the details of a processed order by order ID."""
+
+    URL = "https://eu-ext.linnworks.net/api/Orders/GetOrderDetailsByNumOrderId"
+    METHOD = LinnworksAPIRequest.GET
+
+    @classmethod
+    def params(cls, *args: Any, **kwargs: Any) -> dict[str, Any]:
+        """Return request URL parameters."""
+        order_id = str(kwargs["order_id"])
+        return {"OrderId": order_id}

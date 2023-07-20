@@ -2,7 +2,11 @@
 
 from linnapi import exceptions, models
 from linnapi.request import make_request
-from linnapi.requests.orders import GetProcessedAuditTrail, SearchProcessedOrders
+from linnapi.requests.orders import (
+    GetOrderDetailsByNumOrderId,
+    GetProcessedAuditTrail,
+    SearchProcessedOrders,
+)
 
 
 def search_processed_orders(search_term: str) -> list[models.ProcessedOrder]:
@@ -31,17 +35,16 @@ def search_processed_orders(search_term: str) -> list[models.ProcessedOrder]:
 
 def get_order_guid_by_order_id(order_id: str) -> str:
     """Return the GUID id for an order by order ID."""
-    search_results = search_processed_orders(search_term=str(order_id))
-    if len(search_results) == 0:
+    try:
+        response = make_request(GetOrderDetailsByNumOrderId, order_id=str(order_id))
+    except Exception:
         raise exceptions.InvalidResponseError(
-            "Search did not return any procesed orders."
+            f"Failed to retrieve order GUID for order {order_id}"
         )
-    for order in search_results:
-        if str(order.order_id) == str(order_id):
-            return str(order.order_guid)
-    raise exceptions.InvalidResponseError(
-        f"Order matching order ID {order_id} not found."
-    )
+    try:
+        return str(response["OrderId"])
+    except KeyError:
+        raise exceptions.InvalidResponseError("Response did not contain an order GUID.")
 
 
 def get_processed_order_audit_trail(
