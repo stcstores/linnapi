@@ -43,7 +43,7 @@ def get_order_guid_by_order_id(order_id: str) -> str:
         )
     try:
         return str(response["OrderId"])
-    except KeyError:
+    except (KeyError, TypeError):
         raise exceptions.InvalidResponseError("Response did not contain an order GUID.")
 
 

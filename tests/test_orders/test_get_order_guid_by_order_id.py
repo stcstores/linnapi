@@ -49,6 +49,15 @@ def test_get_order_guid_by_order_id_raises_when_order_id_key_not_present(
     assert str(excinfo.value) == "Response did not contain an order GUID."
 
 
+def test_get_order_guid_by_order_id_raises_when_response_is_not_JSON(
+    mock_response, order_id
+):
+    mock_response.return_value = "Error"
+    with pytest.raises(exceptions.InvalidResponseError) as excinfo:
+        orders.get_order_guid_by_order_id(order_id)
+    assert str(excinfo.value) == "Response did not contain an order GUID."
+
+
 def test_get_order_guid_by_order_id_raises_when_request_fails(
     mock_failed_response, order_id, order_guid
 ):
