@@ -45,9 +45,7 @@ def get_stock_level_batch_response(skus, stock_item_ids):
                     "Available": 7,
                     "UnitCost": 0.0,
                     "SKU": "1G2-E6W-4RF",
-                    "AutoAdjust": True,
                     "LastUpdateDate": "2022-04-11T13:32:10.917Z",
-                    "LastUpdateOperation": "Imported from file",
                     "rowid": "a7a86750-235f-4a25-9f68-2ef02f41f4c7",
                     "PendingUpdate": False,
                     "StockItemPurchasePrice": 2.0,
@@ -77,9 +75,7 @@ def get_stock_level_batch_response(skus, stock_item_ids):
                     "Available": 1,
                     "UnitCost": 0.0,
                     "SKU": "MTN-EUM-75H",
-                    "AutoAdjust": True,
                     "LastUpdateDate": "2022-04-11T13:32:10.917Z",
-                    "LastUpdateOperation": "Imported from file",
                     "rowid": "045b37b4-4aca-4afb-af67-f80b8b596a9a",
                     "PendingUpdate": False,
                     "StockItemPurchasePrice": 2.95,
@@ -109,9 +105,7 @@ def get_stock_level_batch_response(skus, stock_item_ids):
                     "Available": 28,
                     "UnitCost": 0.0,
                     "SKU": "868-HHW-8AK",
-                    "AutoAdjust": True,
                     "LastUpdateDate": "2022-04-11T13:32:10.917Z",
-                    "LastUpdateOperation": "Imported from file",
                     "rowid": "1b411f48-7a62-4b3c-ad1e-d1834cdcd841",
                     "PendingUpdate": False,
                     "StockItemPurchasePrice": 2.0,
@@ -181,11 +175,11 @@ def test_get_stock_levels_by_skus_return_value(
     get_stock_level_batch_response,
 ):
     returned_value = inventory.get_stock_levels_by_skus(*skus)
-    assert type(returned_value) == dict
+    assert type(returned_value) is dict
     assert len(returned_value) == 3
     for key, value in returned_value.items():
-        assert type(key) == str
-        assert type(value) == StockLevelInfo
+        assert type(key) is str
+        assert type(value) is StockLevelInfo
     for i, sku in enumerate(skus):
         assert (
             returned_value[sku].stock_level

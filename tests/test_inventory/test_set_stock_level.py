@@ -46,9 +46,7 @@ def set_stock_level_response(sku, location_id):
         "Available": 0,
         "UnitCost": 9.6,
         "SKU": sku,
-        "AutoAdjust": True,
         "LastUpdateDate": "2022-03-18T15:22:06.273Z",
-        "LastUpdateOperation": "DIRECT ADJUSTMENT BY stcadmin",
         "rowid": "2df49516-77f7-4eb6-aa75-dd6ae9ec7e82",
         "PendingUpdate": False,
         "StockItemPurchasePrice": 9.6,
@@ -96,9 +94,9 @@ def test_set_stock_level_return_value(
     returned_value = inventory.set_stock_level(
         changes=changes, location_id=location_id, change_source=change_source
     )
-    assert type(returned_value) == list
+    assert type(returned_value) is list
     assert len(returned_value) == 1
-    assert type(returned_value[0]) == StockLevelInfo
+    assert type(returned_value[0]) is StockLevelInfo
     assert returned_value[0].stock_level == set_stock_level_response["StockLevel"]
 
 

@@ -82,15 +82,6 @@ def test_stock_level_info_with_get_stock_level_response_sets_raw(
     )
 
 
-def test_stock_level_info_with_get_stock_level_response_sets_auto_adjust(
-    stock_level_info_with_get_stock_level_response, get_stock_level_response
-):
-    assert (
-        stock_level_info_with_get_stock_level_response.auto_adjust
-        == get_stock_level_response["AutoAdjust"]
-    )
-
-
 def test_stock_level_info_with_get_stock_level_response_sets_available(
     stock_level_info_with_get_stock_level_response, get_stock_level_response
 ):
@@ -145,15 +136,6 @@ def test_stock_level_info_with_get_stock_level_response_sets_last_update_date(
     )
 
 
-def test_stock_level_info_with_get_stock_level_response_sets_last_update_operation(
-    stock_level_info_with_get_stock_level_response, get_stock_level_response
-):
-    assert (
-        stock_level_info_with_get_stock_level_response.last_update_operation
-        == get_stock_level_response["LastUpdateOperation"]
-    )
-
-
 def test_stock_level_info_with_get_stock_level_response_sets_location_is_fulfillment_center(
     stock_level_info_with_get_stock_level_response, get_stock_level_response
 ):
@@ -195,15 +177,6 @@ def test_stock_level_info_with_set_stock_level_response_sets_raw(
 ):
     assert (
         stock_level_info_with_set_stock_level_response.raw == set_stock_level_response
-    )
-
-
-def test_stock_level_info_with_set_stock_level_response_sets_auto_adjust(
-    stock_level_info_with_set_stock_level_response, set_stock_level_response
-):
-    assert (
-        stock_level_info_with_set_stock_level_response.auto_adjust
-        == set_stock_level_response["AutoAdjust"]
     )
 
 
@@ -258,15 +231,6 @@ def test_stock_level_info_with_set_stock_level_response_sets_last_update_date(
     assert (
         stock_level_info_with_set_stock_level_response.last_update_date
         == models.parse_date_time(set_stock_level_response["LastUpdateDate"])
-    )
-
-
-def test_stock_level_info_with_set_stock_level_response_sets_last_update_operation(
-    stock_level_info_with_set_stock_level_response, set_stock_level_response
-):
-    assert (
-        stock_level_info_with_set_stock_level_response.last_update_operation
-        == set_stock_level_response["LastUpdateOperation"]
     )
 
 

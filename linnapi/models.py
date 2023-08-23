@@ -39,15 +39,12 @@ class StockLevelInfo:
     def __init__(self, stock_level_data: dict[str, Any]):
         """Model for product stock level information."""
         self.raw = stock_level_data
-        self.auto_adjust = stock_level_data["AutoAdjust"]
         self.available = stock_level_data["Available"]
         self.due = stock_level_data["Due"]
         self.in_order_book = stock_level_data["InOrderBook"]
         self.in_orders = stock_level_data["InOrders"]
         self.jit = stock_level_data["JIT"]
         self.last_update_date = parse_date_time(stock_level_data["LastUpdateDate"])
-        self.last_update_operation = stock_level_data["LastUpdateOperation"]
-
         self.location_is_fulfillment_center = stock_level_data["Location"][
             "IsFulfillmentCenter"
         ]
