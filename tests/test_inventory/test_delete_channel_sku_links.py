@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from linnapi import exceptions, inventory
-from linnapi.requests.inventory import GetStockItemIDsBySKU
+from linnapi.requests.inventory import DeleteInventoryItemChannelSKUs
 
 
 @pytest.fixture
@@ -41,8 +41,9 @@ def test_return_value(mock_success_response, channel_item_id):
 
 def test_makes_request(mock_success_response, channel_item_id):
     inventory.delete_channel_sku_links([channel_item_id])
-    assert mock_success_response.called_once_with(
-        GetStockItemIDsBySKU, inventory_item_channel_sku_ids=[channel_item_id]
+    mock_success_response.assert_called_once_with(
+        DeleteInventoryItemChannelSKUs,
+        inventory_item_channel_sku_ids=([channel_item_id],),
     )
 
 
@@ -50,8 +51,9 @@ def test_makes_request_with_multiple_channel_ids(
     mock_success_response, channel_item_ids
 ):
     inventory.delete_channel_sku_links(*channel_item_ids)
-    assert mock_success_response.called_once_with(
-        GetStockItemIDsBySKU, inventory_item_channel_sku_ids=channel_item_ids
+    mock_success_response.assert_called_once_with(
+        DeleteInventoryItemChannelSKUs,
+        inventory_item_channel_sku_ids=tuple(channel_item_ids),
     )
 
 

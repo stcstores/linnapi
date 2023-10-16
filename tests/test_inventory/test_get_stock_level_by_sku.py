@@ -75,7 +75,7 @@ def test_get_stock_level_by_sku_requests_stock_id(
     mock_get_stock_item_id_by_sku, mock_make_request, sku
 ):
     inventory.get_stock_level_by_sku(sku=sku)
-    assert mock_get_stock_item_id_by_sku.called_once_with(sku=sku)
+    mock_get_stock_item_id_by_sku.assert_called_once_with(sku=sku)
 
 
 def test_get_stock_level_by_sku_return_value(
@@ -86,7 +86,7 @@ def test_get_stock_level_by_sku_return_value(
     get_stock_level_response,
 ):
     returned_value = inventory.get_stock_level_by_sku(sku=sku)
-    assert type(returned_value) == StockLevelInfo
+    assert isinstance(returned_value, StockLevelInfo)
     assert returned_value.stock_level == get_stock_level_response["StockLevel"]
 
 

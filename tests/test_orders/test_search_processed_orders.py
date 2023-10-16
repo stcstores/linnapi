@@ -112,8 +112,8 @@ def mock_invalid_response():
 
 def test_search_processed_orders_makes_request(mock_single_response, search_term):
     orders.search_processed_orders(search_term)
-    mock_single_response.called_once_with(
-        orders.SearchProcessedOrders, search_term=search_term
+    mock_single_response.assert_called_once_with(
+        orders.SearchProcessedOrders, search_term=search_term, page_number=1
     )
 
 

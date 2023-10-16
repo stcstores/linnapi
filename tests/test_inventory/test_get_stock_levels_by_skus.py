@@ -164,7 +164,7 @@ def test_get_stock_levels_by_skus_requests_stock_id(
     mock_get_stock_item_ids_by_sku, mock_make_request, skus
 ):
     inventory.get_stock_levels_by_skus(*skus)
-    assert mock_get_stock_item_ids_by_sku.called_once_with(*skus)
+    mock_get_stock_item_ids_by_sku.assert_called_once_with(*skus)
 
 
 def test_get_stock_levels_by_skus_return_value(
@@ -175,11 +175,11 @@ def test_get_stock_levels_by_skus_return_value(
     get_stock_level_batch_response,
 ):
     returned_value = inventory.get_stock_levels_by_skus(*skus)
-    assert type(returned_value) is dict
+    assert isinstance(returned_value, dict)
     assert len(returned_value) == 3
     for key, value in returned_value.items():
-        assert type(key) is str
-        assert type(value) is StockLevelInfo
+        assert isinstance(key, str)
+        assert isinstance(value, StockLevelInfo)
     for i, sku in enumerate(skus):
         assert (
             returned_value[sku].stock_level

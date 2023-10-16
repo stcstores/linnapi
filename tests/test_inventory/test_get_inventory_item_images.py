@@ -60,7 +60,7 @@ def test_get_inventory_item_images_makes_request(
     mock_single_response, inventory_item_id
 ):
     inventory.get_inventory_item_images(inventory_item_id)
-    mock_single_response.called_once_with(
+    mock_single_response.assert_called_once_with(
         GetInventoryItemImages, inventory_item_id=inventory_item_id
     )
 

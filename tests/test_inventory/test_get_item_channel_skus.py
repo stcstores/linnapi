@@ -185,18 +185,18 @@ def test_get_item_channel_skus_return_value(
     mock_single_response, response_data, stock_item_id
 ):
     returned_value = inventory.get_item_channel_skus(stock_item_id)
-    assert type(returned_value) == dict
+    assert isinstance(returned_value, dict)
     assert list(returned_value.keys()) == [stock_item_id]
-    assert type(returned_value[stock_item_id]) == list
+    assert isinstance(returned_value[stock_item_id], list)
     for i, item in enumerate(returned_value[stock_item_id]):
-        assert type(item) == models.ChannelLinkedItem
+        assert isinstance(item, models.ChannelLinkedItem)
         assert item.sku == response_data[0]["ChannelSkus"][i]["SKU"]
 
 
 def test_get_item_channel_skus_makes_request(mock_single_response, stock_item_id):
     inventory.get_item_channel_skus(stock_item_id)
-    assert mock_single_response.called_once_with(
-        BatchGetInventoryItemChannelSKUs, stock_item_ids=[stock_item_id]
+    mock_single_response.assert_called_once_with(
+        BatchGetInventoryItemChannelSKUs, stock_item_ids=(stock_item_id,)
     )
 
 
@@ -204,8 +204,8 @@ def test_get_item_channel_skus_makes_request_with_multiple_skus(
     mock_multiple_response, stock_item_ids
 ):
     inventory.get_item_channel_skus(stock_item_ids)
-    assert mock_multiple_response.called_once_with(
-        BatchGetInventoryItemChannelSKUs, stock_item_ids=stock_item_ids
+    mock_multiple_response.assert_called_once_with(
+        BatchGetInventoryItemChannelSKUs, stock_item_ids=(stock_item_ids,)
     )
 
 
@@ -213,12 +213,12 @@ def test_get_item_channel_skus_return_value_multiple_skus(
     mock_multiple_response, multiple_response_data, stock_item_ids
 ):
     returned_value = inventory.get_item_channel_skus(stock_item_ids)
-    assert type(returned_value) == dict
+    assert isinstance(returned_value, dict)
     assert list(returned_value.keys()) == stock_item_ids
     for item_index, stock_item_id in enumerate(stock_item_ids):
-        assert type(returned_value[stock_item_id]) == list
+        assert isinstance(returned_value[stock_item_id], list)
         for channel_sku_index, item in enumerate(returned_value[stock_item_id]):
-            assert type(item) == models.ChannelLinkedItem
+            assert isinstance(item, models.ChannelLinkedItem)
             item_sku = multiple_response_data[item_index]["ChannelSkus"][
                 channel_sku_index
             ]["SKU"]

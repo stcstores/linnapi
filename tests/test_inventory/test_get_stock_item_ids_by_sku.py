@@ -85,14 +85,14 @@ def test_get_stock_item_ids_by_sku_return_value(
 
 def test_get_stock_item_ids_by_sku_makes_request(mock_single_response, sku):
     inventory.get_stock_item_ids_by_sku([sku])
-    assert mock_single_response.called_once_with(GetStockItemIDsBySKU, skus=[sku])
+    mock_single_response.assert_called_once_with(GetStockItemIDsBySKU, skus=([sku],))
 
 
 def test_get_stock_item_ids_by_sku_makes_request_with_multiple_skus(
     mock_multiple_response, skus
 ):
     inventory.get_stock_item_ids_by_sku(skus)
-    assert mock_multiple_response.called_once_with(GetStockItemIDsBySKU, skus=skus)
+    mock_multiple_response.assert_called_once_with(GetStockItemIDsBySKU, skus=(skus,))
 
 
 def test_get_stock_item_ids_by_sku_return_value_multiple_skus(

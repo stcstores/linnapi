@@ -57,7 +57,7 @@ def mock_invalid_response():
 
 def test_get_inventory_item_images_makes_request(mock_single_response, order_guid):
     orders.get_processed_order_audit_trail(order_guid)
-    mock_single_response.called_once_with(
+    mock_single_response.assert_called_once_with(
         orders.GetProcessedAuditTrail, order_guid=order_guid
     )
 

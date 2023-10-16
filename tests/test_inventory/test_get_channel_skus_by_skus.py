@@ -118,14 +118,14 @@ def test_get_channel_skus_by_skus_calls_get_stock_item_ids_by_sku(
     mock_get_stock_item_ids_by_sku, mock_get_item_channel_skus, skus
 ):
     inventory.get_channel_skus_by_skus(*skus)
-    assert mock_get_stock_item_ids_by_sku.called_once_with(*skus)
+    mock_get_stock_item_ids_by_sku.assert_called_once_with(*skus)
 
 
 def test_get_channel_skus_by_skus_calls_get_item_channel_skus(
     mock_get_stock_item_ids_by_sku, mock_get_item_channel_skus, skus, stock_item_ids
 ):
     inventory.get_channel_skus_by_skus(*skus)
-    assert mock_get_item_channel_skus.called_once_with(*stock_item_ids)
+    mock_get_item_channel_skus.assert_called_once_with(*stock_item_ids)
 
 
 def test_get_channel_skus_by_skus_return_value(
@@ -136,6 +136,6 @@ def test_get_channel_skus_by_skus_return_value(
     get_item_channel_skus_response,
 ):
     returned_value = inventory.get_channel_skus_by_skus(*skus)
-    assert type(returned_value) == dict
+    assert isinstance(returned_value, dict)
     assert list(returned_value.keys()) == skus
     assert returned_value[skus[0]] == get_item_channel_skus_response[stock_item_ids[0]]

@@ -35,7 +35,7 @@ params_values = {"params_key": "params_value"}
 data_values = {"data_key": "data_value"}
 json_values = {"json_key": "json_value"}
 
-multi_headers_values = [{"header_key": "header_value"}]
+multi_headers_values = {"header_key": "header_value"}
 multi_params_values = [{"params_key": "params_value"}]
 multi_data_values = [{"data_key": "data_value"}]
 multi_json_values = [{"json_key": "json_value"}]
@@ -60,10 +60,10 @@ def test_linnworks_api_request_json_method():
 def test_linnworks_api_request_parse_response_method(
     mock_response, mock_response_value
 ):
-    assert mock_response.json.called_once_with()
     assert (
         request.LinnworksAPIRequest.parse_response(mock_response) == mock_response_value
     )
+    mock_response.json.assert_called_once_with()
 
 
 def test_linnworks_api_request_multi_headers_method():
@@ -85,11 +85,11 @@ def test_linnworks_api_request_multi_json_method():
 def test_linnworks_api_request_multi_parse_response_method(
     mock_response, mock_response_value
 ):
-    assert mock_response.json.called_once_with()
     assert (
         request.LinnworksAPIRequest.multi_parse_response(mock_response, [{}])
         == mock_response_value
     )
+    mock_response.json.assert_called_once_with()
 
 
 class TestLinnworksAPIRequest(request.LinnworksAPIRequest):
@@ -118,7 +118,7 @@ def test_make_request_makes_request(
     mock_linnworks_session, request_headers, mock_response_value
 ):
     request.make_request(request.LinnworksAPIRequest)
-    assert mock_linnworks_session.session.request.called_once_with(
+    mock_linnworks_session.session.request.assert_called_once_with(
         url=request.LinnworksAPIRequest.URL,
         method=request.LinnworksAPIRequest.METHOD,
         headers=request_headers,
@@ -182,7 +182,7 @@ def request_subclass_request_call(
 
 
 def test_make_request_calls_headers(mocked_request):
-    assert mocked_request.headers.called_once_with(1, 2, test_param=3)
+    mocked_request.headers.assert_called_once_with(1, 2, test_param=3)
 
 
 def test_make_request_updates_headers_with_auth_token(
@@ -193,19 +193,19 @@ def test_make_request_updates_headers_with_auth_token(
 
 
 def test_make_request_calls_params(mocked_request):
-    assert mocked_request.params.called_once_with(1, 2, test_param=3)
+    mocked_request.params.assert_called_once_with(1, 2, test_param=3)
 
 
 def test_make_request_calls_data(mocked_request):
-    assert mocked_request.data.called_once_with(1, 2, test_param=3)
+    mocked_request.data.assert_called_once_with(1, 2, test_param=3)
 
 
 def test_make_request_calls_json(mocked_request):
-    assert mocked_request.json.called_once_with(1, 2, test_param=3)
+    mocked_request.json.assert_called_once_with(1, 2, test_param=3)
 
 
 def test_make_request_calls_parse_response(mocked_request, mock_response):
-    assert mocked_request.parse_response.called_once_with(
+    mocked_request.parse_response.assert_called_once_with(
         mock_response, 1, 2, test_param=3
     )
 
@@ -270,7 +270,7 @@ class TestLinnworksAPIRequestMultiple(request.LinnworksAPIRequest):
 
 
 class MultiItemRequestSubclassTest(request.MultiItemRequest):
-    request_class = TestLinnworksAPIRequestMultiple
+    request_method = TestLinnworksAPIRequestMultiple
 
     def add_request(self, key):
         self._add_request({"key": key})
@@ -292,10 +292,11 @@ def test_multi_item_request_request_method_returns_request_json(
 def test_multi_item_request_request_method_makes_request(
     mock_linnworks_session, request_headers, multi_item_requester_with_request
 ):
-    assert mock_linnworks_session.session.request.called_once_with(
+    multi_item_requester_with_request.request()
+    mock_linnworks_session.session.request.assert_called_once_with(
         url=request.LinnworksAPIRequest.URL,
         method=request.LinnworksAPIRequest.METHOD,
-        headers=multi_headers_values,
+        headers=request_headers | multi_headers_values,
         params=multi_params_values,
         data=multi_data_values,
         json=multi_json_values,
