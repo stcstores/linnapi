@@ -1,4 +1,5 @@
 """Exceptions for the linnapi package."""
+
 from typing import Any, Mapping
 
 
