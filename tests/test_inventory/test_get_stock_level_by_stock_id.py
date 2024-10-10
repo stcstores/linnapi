@@ -61,7 +61,7 @@ def test_get_stock_level_by_stock_id_return_value(
     mock_make_request, stock_item_id, get_stock_level_response
 ):
     returned_value = inventory.get_stock_level_by_stock_id(stock_item_id=stock_item_id)
-    assert type(returned_value) == StockLevelInfo
+    assert type(returned_value) is StockLevelInfo
     assert returned_value.stock_level == get_stock_level_response["StockLevel"]
 
 

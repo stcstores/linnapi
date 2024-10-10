@@ -133,10 +133,10 @@ def test_get_stock_level_history_by_stock_item_id_return_value(
     returned_value = inventory.get_stock_level_history_by_stock_item_id(
         stock_item_id=stock_item_id, location_id=location_id
     )
-    assert type(returned_value) == list
+    assert type(returned_value) is list
     assert len(returned_value) == len(call_response["Data"])
     for i, obj in enumerate(returned_value):
-        assert type(obj) == models.StockItemHistoryRecord
+        assert type(obj) is models.StockItemHistoryRecord
         assert obj.stock_item_id == call_response["Data"][i]["StockItemId"]
 
 

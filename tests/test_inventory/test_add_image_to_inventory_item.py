@@ -113,7 +113,7 @@ def test_add_image_to_inventory_item_return_value(
     returned_value = inventory.add_image_to_inventory_item(
         sku=sku, image_url=image_url, is_main=True
     )
-    assert type(returned_value) == InventoryItemImage
+    assert type(returned_value) is InventoryItemImage
     assert returned_value.image_id == add_image_to_inventory_item_response["ImageId"]
 
 
