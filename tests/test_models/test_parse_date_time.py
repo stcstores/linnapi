@@ -39,7 +39,7 @@ def test_parse_date_time_method_ignores_long_microseconds():
 
 
 def test_parse_date_time_method_raises_value_error_for_invalid_input():
+    date_string = "20246542-03-15T14:31:09.1039999Z"
     with pytest.raises(ValueError) as exec_info:
-        date_string = "20246542-03-15T14:31:09.1039999Z"
         models.parse_date_time(date_string)
-        assert date_string in exec_info.value
+    assert date_string in str(exec_info.value)

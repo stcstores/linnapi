@@ -21,7 +21,7 @@ def stock_item_ids():
 
 @pytest.fixture
 def get_stock_item_ids_by_sku_return_value(skus, stock_item_ids):
-    return dict(zip(skus, stock_item_ids))
+    return dict(zip(skus, stock_item_ids, strict=True))
 
 
 @pytest.fixture

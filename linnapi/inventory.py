@@ -24,8 +24,8 @@ def get_stock_item_ids_by_sku(*skus: str) -> MutableMapping[str, str]:
     response = make_request(GetStockItemIDsBySKU, skus=skus)
     try:
         return {item["SKU"]: item["StockItemId"] for item in response["Items"]}
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
 
 
 def get_stock_item_id_by_sku(sku: str) -> str:
@@ -33,8 +33,8 @@ def get_stock_item_id_by_sku(sku: str) -> str:
     stock_item_ids = get_stock_item_ids_by_sku(sku)
     try:
         return stock_item_ids[sku]
-    except KeyError:
-        raise exceptions.InvalidResponseError("Requested SKU not in response.")
+    except KeyError as e:
+        raise exceptions.InvalidResponseError("Requested SKU not in response.") from e
 
 
 def get_stock_level_by_stock_id(stock_item_id: str) -> models.StockLevelInfo:
@@ -42,8 +42,8 @@ def get_stock_level_by_stock_id(stock_item_id: str) -> models.StockLevelInfo:
     response = make_request(GetStockLevel, stock_item_id=stock_item_id)
     try:
         return models.StockLevelInfo(response[0])
-    except (KeyError, IndexError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
 
 
 def get_stock_level_by_sku(sku: str) -> models.StockLevelInfo:
@@ -52,8 +52,8 @@ def get_stock_level_by_sku(sku: str) -> models.StockLevelInfo:
     response = make_request(GetStockLevel, stock_item_id=stock_item_id)
     try:
         stock_level_info = models.StockLevelInfo(response[0])
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     else:
         return stock_level_info
 
@@ -96,8 +96,8 @@ def set_stock_level(
     )
     try:
         stock_level_info = [models.StockLevelInfo(_) for _ in response]
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     else:
         return stock_level_info
 
@@ -118,8 +118,8 @@ def add_image_to_inventory_item(
     )
     try:
         inventory_item_image = models.InventoryItemImage(response)
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     else:
         return inventory_item_image
 
@@ -131,8 +131,8 @@ def get_inventory_item_images(inventory_item_id: str) -> list[models.StockItemIm
         stock_item_images = [
             models.StockItemImage(stock_item_image) for stock_item_image in response
         ]
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     else:
         return stock_item_images
 
@@ -153,8 +153,8 @@ def get_stock_level_history_by_stock_item_id(
     )
     try:
         records = [models.StockItemHistoryRecord(_) for _ in response["Data"]]
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     else:
         return sorted(records, key=lambda x: x.timestamp, reverse=True)
 
@@ -228,8 +228,8 @@ def get_item_channel_skus(
                 models.ChannelLinkedItem(item) for item in stock_item["ChannelSkus"]
             ]
             channel_skus[stock_item["StockItemId"]] = item_channel_skus
-    except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+    except (KeyError, IndexError, TypeError) as e:
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from e
     return channel_skus
 
 

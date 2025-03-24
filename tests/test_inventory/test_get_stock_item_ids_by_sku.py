@@ -50,7 +50,7 @@ def multiple_response_data(skus, stock_item_ids):
                 "StockItemId": stock_item_id,
                 "SKU": sku,
             }
-            for sku, stock_item_id in zip(skus, stock_item_ids)
+            for sku, stock_item_id in zip(skus, stock_item_ids, strict=True)
         ]
     }
 
@@ -100,7 +100,8 @@ def test_get_stock_item_ids_by_sku_return_value_multiple_skus(
 ):
     returned_value = inventory.get_stock_item_ids_by_sku([sku])
     assert returned_value == {
-        sku: stock_item_id for sku, stock_item_id in zip(skus, stock_item_ids)
+        sku: stock_item_id
+        for sku, stock_item_id in zip(skus, stock_item_ids, strict=True)
     }
 
 

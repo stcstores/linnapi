@@ -31,7 +31,10 @@ def stock_item_id(stock_item_ids):
 
 @pytest.fixture
 def get_stock_item_ids_return_value(skus, stock_item_ids):
-    return {sku: stock_item_id for sku, stock_item_id in zip(skus, stock_item_ids)}
+    return {
+        sku: stock_item_id
+        for sku, stock_item_id in zip(skus, stock_item_ids, strict=True)
+    }
 
 
 @pytest.fixture
@@ -57,4 +60,4 @@ def test_get_stock_item_id_by_sku_calls_get_stock_item_id_by_sku(
 def test_get_stock_item_id_by_sku_with_invalid_response(mock_get_stock_item_ids):
     with pytest.raises(exceptions.InvalidResponseError) as exc_info:
         inventory.get_stock_item_id_by_sku("654166456")
-        assert str(exc_info.value) == "Requested SKU not in response."
+    assert str(exc_info.value) == "Requested SKU not in response."

@@ -28,7 +28,7 @@ def parse_date_time(date_time_string: str) -> dt.datetime:
             microsecond=int(microsecond),
         )
     except ValueError:
-        raise ValueError(f'Error parsing datestring "{date_time_string}".')
+        raise ValueError(f"Error parsing datestring {date_time_string!r}.") from None
     date_time.replace(tzinfo=pytz.utc)
     return date_time
 

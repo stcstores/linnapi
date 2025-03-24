@@ -148,7 +148,7 @@ def test_get_stock_level_history_by_stock_item_id_with_invalid_response(
         inventory.get_stock_level_history_by_stock_item_id(
             stock_item_id=stock_item_id, location_id=location_id
         )
-        assert str(exc_info.value) == f"Invalid Response: {invalid_response}"
+    assert str(exc_info.value) == f"Invalid Response: {invalid_response}"
 
 
 def test_get_stock_level_history_by_stock_item_id_sorts_response(

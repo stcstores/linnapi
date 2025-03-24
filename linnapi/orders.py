@@ -27,7 +27,9 @@ def search_processed_orders(search_term: str) -> list[models.ProcessedOrder]:
                 ]
             )
         except (KeyError, IndexError, TypeError):
-            raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+            raise exceptions.InvalidResponseError(
+                f"Invalid Response: {response}"
+            ) from None
         else:
             page_number += 1
     return processed_orders
@@ -40,11 +42,13 @@ def get_order_guid_by_order_id(order_id: str) -> str:
     except Exception:
         raise exceptions.InvalidResponseError(
             f"Failed to retrieve order GUID for order {order_id}"
-        )
+        ) from None
     try:
         return str(response["OrderId"])
     except (KeyError, TypeError):
-        raise exceptions.InvalidResponseError("Response did not contain an order GUID.")
+        raise exceptions.InvalidResponseError(
+            "Response did not contain an order GUID."
+        ) from None
 
 
 def get_processed_order_audit_trail(
@@ -55,6 +59,6 @@ def get_processed_order_audit_trail(
     try:
         audit_trail = [models.OrderAuditTrailEntry(entry) for entry in response]
     except (KeyError, IndexError, TypeError):
-        raise exceptions.InvalidResponseError(f"Invalid Response: {response}")
+        raise exceptions.InvalidResponseError(f"Invalid Response: {response}") from None
     else:
         return audit_trail

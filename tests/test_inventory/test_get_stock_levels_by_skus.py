@@ -154,7 +154,8 @@ def mock_get_stock_item_ids_by_sku(skus, stock_item_ids):
         "linnapi.inventory.get_stock_item_ids_by_sku"
     ) as mock_get_stock_item_ids_by_sku:
         return_value = {
-            sku: stock_item_id for sku, stock_item_id in zip(skus, stock_item_ids)
+            sku: stock_item_id
+            for sku, stock_item_id in zip(skus, stock_item_ids, strict=True)
         }
         mock_get_stock_item_ids_by_sku.return_value = return_value
         yield mock_get_stock_item_ids_by_sku

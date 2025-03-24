@@ -43,7 +43,11 @@ class LinnworksAPISession:
         application_secret: Optional[str] = None,
         application_token: Optional[str] = None,
     ) -> None:
-        """Set login credentials (application_id, application_secret, application_token)."""
+        """
+        Set login credentials.
+
+        (application_id, application_secret, application_token).
+        """
         cls.application_id = application_id
         cls.application_secret = application_secret
         cls.application_token = application_token
